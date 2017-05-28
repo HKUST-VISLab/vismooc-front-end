@@ -1,0 +1,207 @@
+.grid {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0 auto 0 auto;
+  align-items: stretch;
+
+  &.grid-no-spacing {
+    padding: 0;
+  }
+}
+
+.col {
+  box-sizing: border-box;
+}
+
+
+.col-top {
+  align-self: flex-start;
+}
+
+.col-middle {
+  align-self: center;
+}
+
+.col-bottom {
+  align-self: flex-end;
+}
+
+.col-stretch {
+  align-self: stretch;
+}
+
+.grid.grid-no-spacing > .col {
+  margin: 0;
+}
+
+// Define order override classes.
+@for $i from 1 through $grid-max-columns {
+  .col-order-#{$i} {
+    order: $i;
+  }
+}
+
+
+// Mixins for width calculation.
+@mixin partial-size($size, $columns, $gutter) {
+  width: calc(#{(($size / $columns) * 100)+"%"} - #{$gutter});
+
+  .grid-no-spacing > & {
+    width: #{(($size / $columns) * 100)+"%"};
+  }
+}
+
+@mixin full-size($gutter) {
+  @include partial-size(1, 1, $gutter);
+}
+
+@mixin offset-size($size, $columns, $gutter) {
+  margin-left: calc(#{(($size / $columns) * 100)+"%"} + #{$gutter / 2});
+
+  .grid.grid-no-spacing > & {
+    margin-left: #{(($size / $columns) * 100)+"%"};
+  }
+}
+
+
+
+////////// Phone //////////
+
+@media (max-width: $grid-tablet-breakpoint - 1) {
+  .grid {
+    padding: $grid-phone-margin - ($grid-phone-gutter / 2);
+  }
+
+  .col {
+    margin: $grid-phone-gutter / 2;
+    @include partial-size($grid-cell-default-columns, $grid-phone-columns,
+        $grid-phone-gutter);
+  }
+
+  .col-hide-phone {
+    display: none !important;
+  }
+
+  // Define order override classes.
+  @for $i from 1 through $grid-max-columns {
+    .col-order-#{$i}-phone.col-order-#{$i}-phone {
+      order: $i;
+    }
+  }
+
+  // Define partial sizes for columnNumber < totalColumns.
+  @for $i from 1 through ($grid-phone-columns - 1) {
+    .col-#{$i},
+    .col-#{$i}-phone.col-#{$i}-phone {
+      @include partial-size($i, $grid-phone-columns, $grid-phone-gutter);
+    }
+  }
+
+  // Define 100% for everything else.
+  @for $i from $grid-phone-columns through $grid-desktop-columns {
+    .col-#{$i},
+    .col-#{$i}-phone.col-#{$i}-phone {
+      @include full-size($grid-phone-gutter);
+    }
+  }
+
+  // Define valid phone offsets.
+  @for $i from 1 through ($grid-phone-columns - 1) {
+    .col-#{$i}-offset,
+    .col-#{$i}-offset-phone.col-#{$i}-offset-phone {
+      @include offset-size($i, $grid-phone-columns, $grid-phone-gutter);
+    }
+  }
+}
+
+
+////////// Tablet //////////
+
+@media (min-width: $grid-tablet-breakpoint) and (max-width: $grid-desktop-breakpoint - 1) {
+  .grid {
+    padding: $grid-tablet-margin - ($grid-tablet-gutter / 2);
+  }
+
+  .col {
+    margin: $grid-tablet-gutter / 2;
+    @include partial-size($grid-cell-default-columns, $grid-tablet-columns,
+        $grid-tablet-gutter);
+  }
+
+  .col-hide-tablet {
+    display: none !important;
+  }
+
+  // Define order override classes.
+  @for $i from 1 through $grid-max-columns {
+    .col-order-#{$i}-tablet.col-order-#{$i}-tablet {
+      order: $i;
+    }
+  }
+
+  // Define partial sizes for columnNumber < totalColumns.
+  @for $i from 1 through ($grid-tablet-columns - 1) {
+    .col-#{$i},
+    .col-#{$i}-tablet.col-#{$i}-tablet {
+      @include partial-size($i, $grid-tablet-columns, $grid-tablet-gutter);
+    }
+  }
+
+  // Define 100% for everything else.
+  @for $i from $grid-tablet-columns through $grid-desktop-columns {
+    .col-#{$i},
+    .col-#{$i}-tablet.col-#{$i}-tablet {
+      @include full-size($grid-tablet-gutter);
+    }
+  }
+
+  // Define valid tablet offsets.
+  @for $i from 1 through ($grid-tablet-columns - 1) {
+    .col-#{$i}-offset,
+    .col-#{$i}-offset-tablet.col-#{$i}-offset-tablet {
+      @include offset-size($i, $grid-tablet-columns, $grid-tablet-gutter);
+    }
+  }
+}
+
+
+////////// Desktop //////////
+
+@media (min-width: $grid-desktop-breakpoint) {
+  .grid {
+    padding: $grid-desktop-margin - ($grid-desktop-gutter / 2);
+  }
+
+  .col {
+    margin: $grid-desktop-gutter / 2;
+    @include partial-size($grid-cell-default-columns, $grid-desktop-columns,
+        $grid-desktop-gutter);
+  }
+
+  .col-hide-desktop {
+    display: none !important;
+  }
+
+  // Define order override classes.
+  @for $i from 1 through $grid-max-columns {
+    .col-order-#{$i}-desktop.col-order-#{$i}-desktop {
+      order: $i;
+    }
+  }
+
+  // Define partial sizes for all numbers of columns.
+  @for $i from 1 through $grid-desktop-columns {
+    .col-#{$i},
+    .col-#{$i}-desktop.col-#{$i}-desktop {
+      @include partial-size($i, $grid-desktop-columns, $grid-desktop-gutter);
+    }
+  }
+
+  // Define valid desktop offsets.
+  @for $i from 1 through ($grid-desktop-columns - 1) {
+    .col-#{$i}-offset,
+    .col-#{$i}-offset-desktop.col-#{$i}-offset-desktop {
+      @include offset-size($i, $grid-desktop-columns, $grid-desktop-gutter);
+    }
+  }
+}

@@ -1,0 +1,56 @@
+ @import "src/styles/import";
+ .sidebar {
+     background-color: #FFF;
+     box-shadow: 0 2px 5px 0 rgba(black, 0.16), 0 2px 10px 0 rgba(black, 0.12);
+     display: flex;
+     flex-direction: column;
+     flex-shrink: 0;
+     height: 100vh;
+     width: rem-calc(360px);
+     z-index: 1;
+     >.header {
+         background-color: $toolbar-color;
+         color: white;
+         font-size: 1.5rem;
+         height: rem-calc(62px);
+         padding: rem-calc(16px);
+         z-index: 20;
+         flex-shrink: 0;
+     }
+     >.content {
+         height: 100%;
+         overflow-y: auto;
+         overflow-x: hidden;
+     }
+     .ui-collapsible__body-wrapper {
+         background: #fff;
+     }
+     .list-group {
+         list-style: none;
+         margin: 0;
+         padding: 0;
+         .list-item {
+             cursor: pointer;
+             align-items: center;
+             color: rgba(black, 0.87);
+             display: flex;
+             padding: rem-calc(12px);
+             //  padding-left: rem-calc(40px);
+             &.is-active {
+                 color: #1976d2;
+                 font-weight: 500;
+                 background-color: rgba(black, 0.05);
+             }
+             &:hover,
+             &:focus {
+                 text-decoration: none;
+                 background-color: rgba(black, 0.05);
+             }
+             .ui-icon {
+                 font-size: rem-calc(18px);
+                 margin-left: rem-calc(12px);
+                 color: #868686;
+             }
+         }
+     }
+ }

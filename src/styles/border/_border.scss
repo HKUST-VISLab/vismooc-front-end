@@ -1,0 +1,25 @@
+@import "../variables";
+
+.border-left{
+    border-left-width: $border-width;
+    border-left-style: solid;
+    border-left-color: $border-color;
+}
+
+.border-bottom{
+    border-bottom-width: $border-width;
+    border-bottom-style: solid;
+    border-bottom-color: $border-color;
+}
+
+.border-right{
+    border-right-width: $border-width;
+    border-right-style: solid;
+    border-right-color: $border-color;
+}
+
+.border-top{
+    border-top-width: $border-width;
+    border-top-style: solid;
+    border-top-color: $border-color;
+}

@@ -1,0 +1,31 @@
+<div class="course-info">
+    <ui-modal ref="modalCourseInfo" class="modal" size="large">
+        <h3 slot="header" class="header">Course Information</h3>
+        <div class="body grid">
+            <div class="course-name info-item col col-12 grid">
+                <strong class="col col-3">Course Name:</strong>
+                <span class="col col-8">{{ course && course.name }}</span>
+            </div>
+            <div class="instructors info-item col col-12 grid">
+                <strong class="col col-3">Instructor(s):</strong>
+                <span class="col col-8">{{ course && course.instructor.join(', ') }}</span>
+            </div>
+            <div class="period info-item col col-12 grid">
+                <strong class="col col-3">Start:</strong>
+                <span class="col col-3">{{ course && course.startDate | formatTimestamp }}</span>
+                <strong class="col col-3">End:</strong>
+                <span class="col col-3">{{ course && course.endDate | formatTimestamp }}</span>
+            </div>
+            <div class="description info-item col col-12 grid">
+                <strong class="col col-3">Description:</strong>
+                <span class="col col-8">{{course && course.description}}</span>
+            </div>
+            <img :src="course && course.img" style="width:150px" />
+        </div>
+    </ui-modal>
+    <!--Button-->
+    <div v-show="course" class="statisitc-icon" @click="openModal">
+        <span class="fa fa-info-circle"></span>
+        <br/>Course Info
+    </div>
+</div>

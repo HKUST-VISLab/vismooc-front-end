@@ -1,0 +1,85 @@
+ @import "src/styles/import";
+ .sentiment-info {
+     .ui-modal--size-large {
+         .ui-modal__container {
+             width: rem-calc(1048px);
+         }
+     }
+     .modal {
+         .body {
+             position: relative;
+             overflow: hidden;
+             svg {
+                 text {
+                     user-select: none;
+                 }
+                 text::selection {
+                     background: none;
+                 }
+                 .plot-info {
+                     .caption {
+                         font-size: 18px;
+                         text-anchor: middle;
+                         alignment-baseline: middle;
+                     }
+                     .title {
+                         font-size: 30px;
+                     }
+                     .legend {
+                         text-anchor: middle;
+                         alignment-baseline: hanging;
+                     }
+                 }
+                 .plot {
+                    //  sentiment-nodes-leave-active,
+                    //  sentiment-nodes-leave-to{
+
+                    //  }
+                     .sentiment-nodes-enter-active,
+                     .sentiment-nodes-leave-active {
+                         transition: all 1s;
+                     }
+                     .sentiment-nodes-enter,
+                     .sentiment-nodes-leave-to {
+                         opacity: 0;
+                     }
+                     .node {
+                         stroke: #aaa;
+                         stroke-width: 1px;
+                     }
+                     .node:hover {
+                         stroke: orange;
+                         stroke-width: 3px;
+                     }
+                     .axis {
+                         line,
+                         path {
+                             fill: none;
+                             stroke: grey;
+                             stroke-width: 2;
+                         }
+                         text {
+                             font-family: sans-serif;
+                             font-size: 11px;
+                         }
+                     }
+                 }
+             }
+             .tooltip {
+                 position: absolute;
+                 border-radius: 10px;
+                 box-shadow: 4px 4px 10px rgba(0, 0, 0, .4);
+                 pointer-events: none;
+                 width: 300px;
+                 height: auto;
+                 padding: 10px;
+                 background-color: #fff;
+             }
+         }
+     }
+ } //  .goBackLink {
+ //      cursor: pointer;
+ //  }
+ //  .goBackLink:hover {
+ //      color: red;
+ //  }

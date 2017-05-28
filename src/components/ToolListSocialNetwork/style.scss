@@ -1,0 +1,27 @@
+@import "src/styles/import";
+.social-network-info {
+    .modal {
+        .slider{
+            margin-top: 20px;
+        }
+        .social-network {
+            .legend {
+                text-anchor: middle;
+                .title{
+                    alignment-baseline: baseline;
+                }
+                .caption{
+                    alignment-baseline: hanging;
+                }
+            }
+        }
+    }
+}
+
+// .opacitynode {
+//     opacity: 0.1;
+// }
+
+// .opacityedge {
+//     opacity: 0.1;
+// }

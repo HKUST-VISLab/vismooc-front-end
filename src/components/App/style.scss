@@ -1,0 +1,27 @@
+    @import 'src/styles/index.scss';
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        font-size: $base-font-size;
+    }
+
+    body {
+        color: rgba(black, 0.87);
+        font-size: rem-calc(15px);
+        background: white !important;
+    }
+
+    .app {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        position: relative;
+    }

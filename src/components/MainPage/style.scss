@@ -1,0 +1,90 @@
+@import "src/styles/import";
+$content-padding-left:40px;
+.main-page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    >.header {
+        font-size: 1.5rem;
+        height: rem-calc(62px);
+        background-color: $toolbar-color;
+        flex-shrink: 0;
+    }
+    >.page {
+        height: 100%;
+        width: 100%;
+        >.content {
+            position: relative;
+            overflow-y: scroll;
+            >.video-part {
+                //  .video-js.vjs-default-skin.vjs-paused .vjs-big-play-button {
+                //      display: block;
+                //  }
+                padding-left: $content-padding-left;
+                padding-right: 20px;
+                >.video-player {
+                    .vjs-control-bar {
+                        >.vjs-current-time,
+                        >.vjs-time-divider,
+                        >.vjs-duration {
+                            display: block;
+                        }
+                        >.vjs-progress-control {
+                            position: absolute;
+                            bottom: 2.5em;
+                            /* The height of the ControlBar minus 4px. */
+                            left: 0;
+                            right: 0;
+                            width: 100%;
+                            height: 10px;
+                            /* the height must be reduced from 30 to 10px in order to allow the buttons below (e.g. play) to be pushed */
+                        }
+                        >.vjs-progress-holder {
+                            /* needed to have a real 100% width display. */
+                            margin-left: 0px;
+                            margin-right: 0px;
+                        }
+                        >.vjs-fullscreen-control {
+                            position: absolute;
+                            bottom: 0;
+                            right: 0;
+                        }
+                        >.vjs-playback-rate {
+                            position: absolute;
+                            bottom: 0;
+                            right: 28px;
+                        }
+                        >.vjs-volume-menu-button {
+                            position: absolute;
+                            bottom: 0;
+                            right: 55px;
+                        }
+                    }
+                }
+            }
+            >.chart-part {
+                position: relative;
+                padding-left: $content-padding-left;
+                padding-right: 20px;
+                >#content-video-progress-bar {
+                    position: absolute;
+                    top: 0;
+                    width: 0;
+                    height: 100%;
+                    background: #aaaaaa;
+                    border-right: dashed 1px;
+                    border-color: #000000;
+                    opacity: 0.2;
+                    z-index: -3;
+                }
+            }
+        }
+    }
+}
+
+#stacked-area-graph {
+    width: calc(100% + #{$content-padding-left});
+    margin-left: -$content-padding-left;
+}

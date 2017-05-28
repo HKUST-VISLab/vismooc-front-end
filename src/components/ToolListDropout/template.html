@@ -1,0 +1,24 @@
+<div class="dropout-info">
+    <ui-modal ref="modalDropoutInfo" class="modal" size="large">
+        <h3 slot="header" class="header">Dropout Predict</h3>
+        <div class="body">
+            <div class="main-view">
+                <svg ref="svgMainview" :width="svgWidth" :height="svgHeight">
+                    <g class="legend" :transform="`translate(${clusterWidth + boxMargin}, ${plotMargin.top * 0.5})`">
+                        <template v-for="(eventType, idx) in eventTypes">
+                            <circle r="8" :fill=pieColor(idx) :cx="idx * legendMargin"></circle>
+                            <text :x="10 + idx * legendMargin">{{ eventType}}</text>
+                        </template>
+                    </g>
+
+                </svg>
+            </div>
+        </div>
+    </ui-modal>
+
+    <!--Button-->
+    <div v-show="course" class="statisitc-icon" @click="openModal">
+        <span class="fa fa-user-circle"></span>
+        <br/>Dropout Predict
+    </div>
+</div>

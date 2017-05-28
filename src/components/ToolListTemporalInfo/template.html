@@ -1,0 +1,25 @@
+<div class="temporal-info">
+    <ui-modal ref="modalTemporalInfo" class="modal" size="large">
+        <h3 slot="header" class="header">Video Temporal Hotness</h3>
+        <div id="cal-heatmap" class="body" />
+            <!--TODO here, privide the filter of byWeek and byAny days-->
+            <!--<div>
+                <div class="sliderExample">
+                    <a name="ex1"></a>
+                    <strong>week {{vals.week}}</strong>
+                    <div ui-slider="slider.optionsWeek" min="1" :max="weekRange" ng-model="vals.week" style="margin-top:15px"></div>
+                </div>
+                <hr>
+                <div class="sliderExample">
+                    <a name="ex6"></a>
+                    <strong style="margin-bottom: 15px">from day {{vals.range[0]}} to day {{vals.range[1]}}</strong>
+                    <div ui-slider="slider.optionsRange" :min="1" :max="dayRange" ng-model="vals.range" style="margin-top:15px"></div>
+                </div>
+            </div>-->
+    </ui-modal>
+    <!--Button-->
+    <div v-show="video" class="statisitc-icon" @click="openModal">
+        <span class="fa fa-calendar"></span>
+        <br/>Temporal Info
+    </div>
+</div>

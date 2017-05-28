@@ -1,0 +1,14 @@
+<div class="videopop-info">
+    <ui-modal ref="modalVideopopInfo" class="modal" size="large">
+        <h3 slot="header" class="header">Video Popularity Information</h3>
+        <svg ref="barchart"
+            class="body"
+            :style="{height:chartConfig.height+'px', width:chartConfig.width+'px'}"
+        ></svg>
+    </ui-modal>
+    <!--Button-->
+    <div v-show="course" class="statisitc-icon" @click="openModal">
+        <span class="fa fa-bar-chart"></span>
+        <br/>Popularity Info
+    </div>
+</div>

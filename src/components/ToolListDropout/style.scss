@@ -1,0 +1,55 @@
+@import "src/styles/import";
+.dropout-info {
+    .modal {
+        .body {
+            .main-view {
+                .legend {
+                    text {
+                        alignment-baseline: middle;
+                        font-family: sans-serif;
+                        font-size: 12px;
+                        fill: black;
+                    }
+                }
+                .cluster{
+                    text {
+                        text-anchor: middle;
+                    }
+                }
+                .main-plot {
+                    .stem {
+                        stroke-width: 2;
+                        stroke: #888888;
+                        opacity: 0.8;
+                    }
+                    .empty-circle {
+                        r: 5px;
+                        fill: #888888;
+                    }
+                    .inner-circle {
+                        opacity: 1;
+                    }
+                    .vertical-seperator {
+                        fill: none;
+                        stroke-width: 0.5px;
+                        stroke: #000000;
+                    }
+                    .horizontal-bar {
+                        fill: #238b45;
+                        opacity: 0.2;
+                        stroke-width: 1;
+                        stroke: #000000;
+                    }
+                }
+                .axis {
+                    path,
+                    line {
+                        fill: none;
+                        stroke: #000000;
+                        stroke-width: 2px;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "eslint.enable": true,
+    "path-intellisense.mappings": {
+        "components":"${workspaceRoot}/src/components",
+        "src":"${workspaceRoot}/src"
+    }
+}
