@@ -44,11 +44,15 @@ export default {
             const start = new Date(+startDateTS);
             const end = endDateTS ? new Date(+endDateTS) : start;
             const range = Math.max((end.getMonth() - start.getMonth()) + 1, 7);
-            const data = {};
+
             const temporalHotness = video.temporalHotness;
-            Object.keys(temporalHotness).forEach((dateStr) => {
-                data[new Date(dateStr).getTime() * 0.001] = temporalHotness[dateStr];
-            });
+            const data = Object.keys(temporalHotness)
+                .reduce((o, dateStr) => {
+                    // all timestamp in seconde
+                    o[(+dateStr) * 0.001] = temporalHotness[dateStr];
+                    return o;
+                }, {});
+
             if (this.complexObject.cal) this.complexObject.cal.destroy();
             this.complexObject.cal = new CalHeatmap();
             this.complexObject.cal.init({

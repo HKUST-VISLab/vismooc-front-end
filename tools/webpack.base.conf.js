@@ -6,7 +6,7 @@ const config = require('../config');
 const utils = require('./utils');
 const eslintFormatter = require('eslint-friendly-formatter');
 
-function resolve(dir){
+function resolve(dir) {
     return path.join(__dirname, '..', dir);
 }
 const isProduction = process.env.NODE_ENV === 'production';
@@ -34,43 +34,51 @@ module.exports = {
             src: resolve('src'),
             assets: resolve('src/assets'),
             components: resolve('src/components'),
-            'vue-tagsinput$':'vue-tagsinput/src/input.vue'
+            'vue-tagsinput$': 'vue-tagsinput/src/input.vue'
         },
     },
     module: {
         rules: [{
             test: /\.(js|vue)$/,
-            loader: 'eslint-loader',
+            use: {
+                loader: 'eslint-loader',
+                options: { formatter: eslintFormatter },
+            },
             enforce: 'pre',
             include: [resolve('src'), resolve('tests')],
-            options: { formatter: eslintFormatter },
         },
         {
             test: /\.vue$/,
-            loader: 'vue-loader',
-            options: vueLoaderOptions,
+            use: {
+                loader: 'vue-loader',
+                options: vueLoaderOptions,
+            },
         },
         {
             test: /\.js$/,
-            loader: 'babel-loader',
+            use: 'babel-loader',
             include: [resolve('src'), resolve('tests'),
-                resolve('node_modules/vue-tagsinput/src')
+            resolve('node_modules/vue-tagsinput/src')
             ]
         },
         {
             test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-            loader: 'url-loader',
-            options: {
-                limit: 10000,
-                name: utils.assetsPath('image/[name].[hash:7].[ext]'),
+            use: {
+                loader: 'url-loader',
+                options: {
+                    limit: 10000,
+                    name: utils.assetsPath('image/[name].[hash:7].[ext]'),
+                },
             },
         },
         {
             test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-            loader: 'url-loader',
-            options: {
-                limit: 10000,
-                name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
+            use: {
+                loader: 'url-loader',
+                options: {
+                    limit: 10000,
+                    name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
+                },
             },
         },
         ],
