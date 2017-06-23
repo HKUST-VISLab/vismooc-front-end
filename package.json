@@ -102,6 +102,5 @@
         "e2e": "node tests/e2e/runner.js",
         "test": "npm run unit",
         "lint": "eslint --ext .js,.vue src tests/unit/specs tests/e2e/specs"
-    },
-    "false": {}
+    }
 }
