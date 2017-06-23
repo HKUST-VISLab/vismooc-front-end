@@ -3,7 +3,7 @@ import VueResource from 'vue-resource';
 
 Vue.use(VueResource);
 // TODO chang the path when released
-const mainPath = 'http://localhost:9999/';
+const mainPath = '/';
 const $http = Vue.http;
 
 function getClicks(courseId, videoId, paramters = {}, callback) {

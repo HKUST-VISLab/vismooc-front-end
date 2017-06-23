@@ -115,7 +115,8 @@ export default {
                         key,
                         values: arrayAggregate(3, clicksDist[key]).map((d, i) => [i, d]),
                         color: colors(key),
-                    })));
+                    }))
+                    .sort((a, b) => a.key.localeCompare(b.key)));
             }
         },
     },
