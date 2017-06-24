@@ -1,6 +1,6 @@
 {
     "name": "vismooc-front-end",
-    "version": "0.1.0",
+    "version": "0.5.0",
     "description": "The front end of Vismooc",
     "dependencies": {
         "vue": "^2.3.3",
