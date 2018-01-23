@@ -1,4 +1,5 @@
 import {
+    TRIGGER_SIDEBAR,
     GET_COURSES_LIST,
     SELECT_COURSE,
     SELECT_VIDEO,
@@ -27,9 +28,9 @@ function fetchDataWrapper(commit, mutationType, func, target, ...params) {
                 [target]: data,
                 fresh: true,
             });
-            commit(LOGINED);
         } else {
             commit(LOGOUTED);
+            commit(TRIGGER_SIDEBAR, true);
         }
         commit(FINISHED_LOADING);
     });
@@ -37,25 +38,32 @@ function fetchDataWrapper(commit, mutationType, func, target, ...params) {
 }
 
 const actions = {
-    [GET_COURSES_LIST]({ commit, state }) {
+    [TRIGGER_SIDEBAR]({ commit }, payload) {
+        commit(TRIGGER_SIDEBAR, payload);
+    },
+    [GET_COURSES_LIST]({ commit, state, dispatch }) {
         // fetchDataWrapper(commit, GET_COURSES_LIST, dataManager.getCourseList, 'coursesList');
         commit(LOADING);
         dataManager.getCourseList((response) => {
             if (isAuthenticated(response.data)) {
-                const { coursesList, selectedCourseId } = response.data;
+                const { coursesList, selectedCourseId, username } = response.data;
                 commit(GET_COURSES_LIST, { coursesList, fresh: true });
-                commit(LOGINED);
+                commit(LOGINED, { username });
                 if (selectedCourseId) {
-                    actions.SELECT_COURSE({ commit, state }, { selectedCourseId });
+                    dispatch(SELECT_COURSE, { selectedCourseId });
+                    commit(TRIGGER_SIDEBAR, true);
+                } else {
+                    commit(TRIGGER_SIDEBAR, false);
                 }
             } else {
                 commit(LOGOUTED);
+                commit(TRIGGER_SIDEBAR, true);
             }
             commit(FINISHED_LOADING);
         });
     },
-    [SELECT_COURSE]({ commit, state }, playload) {
-        const { selectedCourseId } = playload;
+    [SELECT_COURSE]({ commit, state }, payload) {
+        const { selectedCourseId } = payload;
         if (!selectedCourseId) {
             return;
         }
@@ -78,8 +86,8 @@ const actions = {
             // });
         }
     },
-    [SELECT_VIDEO]({ commit, state }, playload) {
-        const { selectedVideo } = playload;
+    [SELECT_VIDEO]({ commit, state }, payload) {
+        const { selectedVideo } = payload;
         selectedVideo.duration = selectedVideo.duration || 0;
         commit(SELECT_VIDEO, { selectedVideo });
     },
@@ -128,8 +136,8 @@ const actions = {
             // });
         }
     },
-    [UPDATE_CLICKS_FILTER]({ commit }, playload) {
-        commit(UPDATE_CLICKS_FILTER, playload);
+    [UPDATE_CLICKS_FILTER]({ commit }, payload) {
+        commit(UPDATE_CLICKS_FILTER, payload);
     },
     [FETCH_SENTIMENT]({ commit, state }) {
         const courseId = state.selectedCourse.id;
@@ -142,9 +150,9 @@ const actions = {
             fetchDataWrapper(commit, FETCH_SENTIMENT, dataManager.getSentimentData, 'sentimentInfo', courseId);
         }
     },
-    [FETCH_FORUMSOCIALNETWORK]({ commit, state }, playload) {
+    [FETCH_FORUMSOCIALNETWORK]({ commit, state }, payload) {
         const courseId = state.selectedCourse.id;
-        const { threshold } = playload;
+        const { threshold } = payload;
         if (state.coursesSocialNetworkInfo[courseId] && state.coursesSocialNetworkInfo[courseId][threshold]) {
             commit(FETCH_FORUMSOCIALNETWORK, {
                 socialNetworkInfo: state.coursesSocialNetworkInfo[courseId][threshold],
@@ -168,9 +176,9 @@ const actions = {
         //     commit(FETCH_FORUMSOCIALNETWORK, { socialNetworkData });
         // });
     },
-    [FETCH_WORDCLOUD]({ commit, state }, playload) {
+    [FETCH_WORDCLOUD]({ commit, state }, payload) {
         const courseId = state.selectedCourse.id;
-        const { wordCloudType, wordCloudArgs } = playload;
+        const { wordCloudType, wordCloudArgs } = payload;
         if (wordCloudType === 'byUser') {
             const { userId } = wordCloudArgs;
             dataManager.getWordCloudDataByUser(courseId, userId, (response) => {

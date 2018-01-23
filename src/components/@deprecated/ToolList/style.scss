@@ -1,0 +1,31 @@
+ @import "src/styles/import";
+ .tool-list {
+     text-align: center;
+     padding: 0;
+     .statisitc-icon {
+         cursor: pointer;
+         color: #aaaaaa;
+         width: 100%;
+         padding-top: 10px;
+         padding-bottom: 10px;
+         margin: 10px auto;
+         text-align: center;
+         font-size: 12px;
+     }
+     .statisitc-icon>span {
+         font-size: 40px;
+     }
+     .statisitc-icon:hover {
+         color: #ffffff;
+         background-color: #428bca;
+     }
+     .dash-category-label {
+         color: #ffffff;
+         margin-top: -6px;
+         background: #aaaaaa;
+     }
+     .dash-category-label>hr {
+         margin-top: 5px;
+         margin-bottom: 5px;
+     }
+ }

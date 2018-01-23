@@ -1,0 +1,43 @@
+<div class="videos-page">
+    <div id="video-list" class="video-list">
+        <ui-collapsible :key="`${course.id}-${videoGroup.section}`" v-for="(videoGroup, index) in videosList" :title="videoGroup.section">
+            <ul class="list-group">
+                <li v-for="v in videoGroup.videos" :key="v.id" @click="selectVideo({selectedVideo:v})" :class="{'is-active':video && v.id === video.id}"
+                    class="list-item">{{v.name}}</li>
+            </ul>
+        </ui-collapsible>
+    </div>
+
+    <div v-show="video" id="content" class="content">
+        <section class="temporal-info">
+            <h3 class="section-title">Video Temporal Hotness</h3>
+            <div id="cal-heatmap" />
+        </section>
+        <hr />
+        <section class="clicks-analyze">
+            <h3 class="section-title">Clicks Analyze</h3>
+            <div v-show="chartData" class="control-panel">
+                <ui-datepicker help="Pick a begin date of the clicks" icon="events" orientation="landscape" placeholder="Select the begin date"
+                    :min-date="courseStartDate" :max-date="courseEndDate" v-model="clicksFilterStartDate">Begin Date</ui-datepicker>
+                <ui-datepicker help="Pick a end date of the clicks" icon="events" orientation="landscape" placeholder="Select the end date"
+                    :min-date="courseStartDate" :max-date="courseEndDate" v-model="clicksFilterEndDate">End Date</ui-datepicker>
+                <ui-select label="Users' Country" icon="place" multiple help="Select the countries of the users" placeholder="All" :options="countryList"
+                    v-model="clicksFilterCountry"></ui-select>
+            </div>
+            <div v-show="chartData" class="video-part">
+                <video-player ref="myPlayer" :options="videoConfig" @timeupdate="playerTimeupdate" :style="{width:`${videoWidth * 100}%`, 'margin-right':videoMarginRight+'px'}"
+                />
+            </div>
+            <div v-show="chartData" class="chart-part">
+                <div id="content-video-progress-bar" :style="{left:`calc(${(1 - videoWidth) * 100}% - ${videoMarginRight}px)`, height:`${seekLineHeight + stackedChartHeight}px` }"></div>
+                <seek-line :seek-data="chartData && chartData.filter(c => c.type === 'seek_video')" :graph-width-ratio="videoWidth" :height="200"
+                    :ticks-aggregate="ticksAggregation" :margin-right="videoMarginRight" @seeklinegraph-click="onClickSeekLineGraph" ref="seekGraph" />
+                <nvd3-stack-chart id="stacked-area-graph" :graph-width-ratio="videoWidth" :height="250" :ticks-aggregate="ticksAggregation" :margin-right="videoMarginRight"
+                    :clicks="chartData" ref="stackedChart" >
+                </nvd3-stack-chart>
+                <event-statistics-chart :clicks="chartData" :graph-width-ratio="videoWidth" :margin-right="videoMarginRight"/>
+            </div>
+        </section>
+    </div>
+    <h1 v-show="!video" style="text-align:center;width: 100%;">Please select a video from Video List!</h1>
+</div>

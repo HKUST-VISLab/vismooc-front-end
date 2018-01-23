@@ -3,11 +3,12 @@ import VueResource from 'vue-resource';
 
 Vue.use(VueResource);
 // TODO chang the path when released
-const mainPath = location.origin + '/';
+const mainPath = process.env.NODE_ENV === 'development' ? 'http://localhost:9999' : location.origin;
 const $http = Vue.http;
+const api = `${mainPath}/api`;
 
 function getClicks(courseId, videoId, paramters = {}, callback) {
-    let tmpURL = `${mainPath}getClicks?courseId=${courseId}&videoId=${videoId}`;
+    let tmpURL = `${api}/getClicks?courseId=${courseId}&videoId=${videoId}`;
     Object.keys(paramters).forEach((p) => { tmpURL += `&${p}=${paramters[p]}`; });
     $http.get(tmpURL).then((response) => {
         callback(response);
@@ -15,52 +16,60 @@ function getClicks(courseId, videoId, paramters = {}, callback) {
 }
 
 function getCourseList(callback) {
-    const tmpURL = `${mainPath}getCourseList`;
+    const tmpURL = `${api}/getCourseList`;
     $http.get(tmpURL).then((response) => {
         callback(response);
     });
 }
 
 function getCourseInfo(courseId, callback) {
-    const tmpURL = `${mainPath}getCourseInfo?courseId=${courseId}`;
+    const tmpURL = `${api}/getCourseInfo?courseId=${courseId}`;
     $http.get(tmpURL).then((response) => {
         callback(response);
     });
 }
 
 function getDemographicData(courseId, callback) {
-    const tmpURL = `${mainPath}getDemographicInfo?courseId=${courseId}`;
+    const tmpURL = `${api}/getDemographicInfo?courseId=${courseId}`;
     $http.get(tmpURL).then((response) => {
         callback(response);
     });
 }
 
 function getSentimentData(courseId, callback) {
-    const tmpURL = `${mainPath}getSentiment?courseId=${courseId}`;
+    const tmpURL = `${api}/getSentiment?courseId=${courseId}`;
     $http.get(tmpURL).then((response) => {
         callback(response);
     });
 }
 
 function getSocialNetworkLayout(courseId, threshold, callback) {
-    const tmpURL = `${mainPath}getSocialNetworkLayout?courseId=${courseId}&activenessThreshold=${threshold}`;
+    const tmpURL = `${api}/getSocialNetworkLayout?courseId=${courseId}&activenessThreshold=${threshold}`;
     $http.get(tmpURL).then((response) => {
         callback(response);
     });
 }
 
-function getWordCloudDataByUser(courseId, userId, callback) {
-    const tmpURL = `${mainPath}getWordList?courseId=${courseId}&userId=${userId}`;
-    $http.get(tmpURL).then((response) => {
-        callback(response);
-    });
+// function getWordCloudDataByUser(courseId, userId, callback) {
+//     const tmpURL = `${api}/getWordList?courseId=${courseId}&userId=${userId}`;
+//     $http.get(tmpURL).then((response) => {
+//         callback(response);
+//     });
+// }
+
+// function getWordCloudDataByGeo(courseId, countrycode, callback) {
+//     const tmpURL = `${api}/getWordList?courseId=${courseId}&countrycode=${countrycode}`;
+//     $http.get(tmpURL).then((response) => {
+//         callback(response);
+//     });
+// }
+
+export function logout() {
+    location.href = `${mainPath}/logout`;
 }
 
-function getWordCloudDataByGeo(courseId, countrycode, callback) {
-    const tmpURL = `${mainPath}getWordList?courseId=${courseId}&countrycode=${countrycode}`;
-    $http.get(tmpURL).then((response) => {
-        callback(response);
-    });
+export function login() {
+    location.href = `${mainPath}/login`;
 }
 
 export const NO_PERMISSION_1 = 'No Permission_1';
@@ -68,12 +77,14 @@ export const NO_PERMISSION_2 = 'No Permission_2';
 
 // Public API
 export default {
+    logout,
+    login,
     getClicks,
     getDemographicData,
     getCourseInfo,
     getCourseList,
     getSentimentData,
     getSocialNetworkLayout,
-    getWordCloudDataByUser,
-    getWordCloudDataByGeo,
+    // getWordCloudDataByUser,
+    // getWordCloudDataByGeo,
 };

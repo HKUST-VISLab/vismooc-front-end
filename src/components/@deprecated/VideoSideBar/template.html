@@ -1,0 +1,22 @@
+<aside id="sidebar" class="sidebar sidebar-mask">
+    <div class="content-warpper">
+        <div class="header">
+            VisMooc
+        </div>
+        <div class="content">
+            <h4>Course Name</h4>
+            <ui-select floating-label placeholder="Select a Course" :options="coursesList" v-model="courseId">
+                <template scope="props" slot="option">
+                    <div>{{props.option.label}}</div>
+                </template>
+            </ui-select>
+            <hr/>
+            <ui-collapsible :key="`${courseId}-${videoGroup.section}`" v-for="(videoGroup, index) in videosList" :title="videoGroup.section">
+                <ul class="list-group">
+                    <li v-for="video in videoGroup.videos" @click="selectVideo({selectedVideo:video})" :class="{'is-active':videoId === video.id}"
+                        class="list-item">{{video.name}}</li>
+                </ul>
+            </ui-collapsible>
+        </div>
+    </div>
+</aside>

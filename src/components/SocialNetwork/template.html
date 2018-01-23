@@ -1,0 +1,61 @@
+<div v-show="course" class="social-network-info">
+    <div class="body">
+        <!--<div class="grid">-->
+        <!--<div class="col-md-6">
+                <button class="btn btn-default col-md-4" @click="clearSelection()">Clear Selection</button>
+                <h4 class="col-md-8">{{showInfo}}</h4>
+                <div id="social-network-geomap"></div>
+                <div id="social-network-wordcloud" v-show="wordcloud"></div>
+            </div>-->
+
+        <!--<div class="col-6">-->
+        <!--<div class="container" style="height:30px; width:40%">
+                    <h5 style="text-align:center">Filter users due to activeness</h5>
+                    <ui-slider :aria-valuemax="4" :aria-valuemin="0" v-model="threshold.value" @change="changeThreshold()"></ui-slider>
+                </div>-->
+
+        <ui-slider class="slider" ref="uiSlider" show-marker :step="1" v-model="threshold"
+            @change="filterUsersByThreshold"></ui-slider>
+        <svg ref="socialNetworkSVG" :width="svgWidth" :height="svgHeight">
+            <g class="social-network">
+                <g class="legend" :transform="`translate(${legendMargin.left}, ${legendMargin.top})`">
+                    <text class="title" :x="legendWidth * 0.5" y="0">Student's Grade</text>
+                    <text class="caption" x="0" :y="legendHeight">15</text>
+                    <text class="caption" :x="legendWidth" :y="legendHeight">100</text>
+                    <text class="caption" :x="legendWidth + legendHeight * 2 + legendHeight * 0.5" :y="legendHeight">No Grade</text>
+                    <rect fill="#000" opacity="0.4" :x="legendWidth + legendHeight * 1.5 + legendHeight * 0.5" y="0" :width="legendHeight" :height="legendHeight"></rect>
+                    <defs>
+                        <linearGradient :id="gradientId" x1="0%" x2="100%" y1="0%" y2="0%">
+                            <stop v-for="d in gradientData" :key="d.rgb" :offset="d.percent" :stop-color="d.rgb" :stop-opacity="d.opacity">
+                            </stop>
+                        </linearGradient>
+                    </defs>
+                    <rect :fill="`url(#${gradientId})`" x="0" y="0" :width="legendWidth" :height="legendHeight" rx="2" ry="2"></rect>
+
+                    <text class="title" :x="legendWidth + legendHeight * 2 + legendHeight + legendPadding + legendWidth * 0.25">Student's Activeness</text>
+                    <text class="caption" :x="legendWidth + legendHeight * 2 + legendHeight + legendPadding" :y="legendHeight">Less</text>
+                    <text class="caption" :x="legendWidth + legendHeight * 2 + legendHeight + legendPadding + legendWidth * 0.5" :y="legendHeight">More</text>
+                    <circle :cx="legendWidth + legendHeight + legendHeight * 2 + legendPadding" :cy="legendHeight * 0.5" r="2" fill="red"></circle>
+                    <circle :cx="legendWidth + legendHeight + legendHeight * 2 + legendPadding + legendWidth * 0.5" :cy="legendHeight * 0.5" r="11" fill="red"></circle>
+                </g>
+
+                <g class="links">
+                    <path v-for="link in links" :key="`${link.source}_${link.target}`" class="link" :d="calLinkPath(link)" :style="{
+                                'fill':'none',
+                                'stroke-width' : widthScale(link.weight),
+                                'stroke': gradientData ? gradientData[Math.floor(gradeScale(nodeDict[link.source].grade))].rgb : 'none',
+                                'opacity': (hoveredNodeId === null || link.source === hoveredNodeId || link.target === hoveredNodeId)  ? 0.4 : 0.1
+                            }">
+                    </path>
+                </g>
+                <g class="nodes">
+                    <circle v-for="node in nodes" :key="node.id" class="node" :cx="xScale(node.x)" :cy="yScale(node.y)" :r="rScale(node.activeness)"
+                        :fill="gradientData[Math.floor(gradeScale(node.grade))].rgb" :opacity="(hoveredNodeId === null || node.id === hoveredNodeId) ? 0.7 : 0.1"
+                        @mouseover="() => hoverNode(node)" @mouseout="()=> hoverNode(null)" @click="()=> showInfo = `Selected user: ${node.id}`">
+                    </circle>
+                </g>
+            </g>
+
+        </svg>
+    </div>
+</div>

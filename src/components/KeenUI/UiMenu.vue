@@ -14,7 +14,7 @@
             @keydown.esc.native.esc="closeMenu"
 
             v-for="option in options"
-            :key="option"
+            :key="option.label"
         >
             <slot name="option" :option="option"></slot>
         </ui-menu-option>

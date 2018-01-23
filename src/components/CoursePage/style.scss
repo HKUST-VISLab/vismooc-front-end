@@ -1,0 +1,40 @@
+.course-page {
+    margin: 0 auto;
+    max-width: 80vw;
+    .section-title {
+        width: 100%;
+        text-align: center;
+    }
+    section {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .course-info {
+        .info-item {
+            align-content: flex-start;
+            align-items: baseline;
+        }
+        .info-label {
+            text-align: right;
+        }
+        .period {
+            width: 100%;
+            text-align: center;
+        }
+        .instructors {
+            span {
+                word-wrap: break-word;
+            }
+        }
+        .description {
+            span {
+                text-align: left;
+            }
+        }
+    }
+    .demographic-info {
+        .geo-chart {
+            position: relative;
+        }
+    }
+}

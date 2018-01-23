@@ -1,6 +1,5 @@
 import 'video.js/dist/video-js.css';
-import videojs from 'video.js';
-import 'videojs-youtube';
+import videojs from 'thirdParty/videojs-youtube';
 
 export default {
     name: 'video-player',

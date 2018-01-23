@@ -10,7 +10,6 @@ const store = new Vuex.Store({
         username: null,
         selectedCourse: null,
         selectedVideo: null,
-        clicksFilters: {},
         coursesList: [], // frozen
         courses: {},
         denseLogs: null, // frozen
@@ -19,7 +18,7 @@ const store = new Vuex.Store({
         coursesDemographicInfo: {},
 
         // Sentiment && SocialNetwork  by xuanwu
-        sentimentInfo: null,  // frozon
+        sentimentInfo: null, // frozon
         coursesSentimentInfo: {},
 
         socialNetworkInfo: null, // frozen
@@ -27,8 +26,9 @@ const store = new Vuex.Store({
 
         wordCloudData: null,
 
-        // manifest
+        // manifest & UI
         networkLoading: false,
+        sideBarIsCollapsed: false,
     },
     mutations,
     actions,

@@ -7,13 +7,13 @@ const webpackConfig = require('../../tools/webpack.test.conf');
 
 module.exports = (config) => {
     config.set({
-                // to run in additional browsers:
-                // 1. install corresponding karma launcher
-                //    http://karma-runner.github.io/0.13/config/browsers.html
-                // 2. add it to the `browsers` array below.
+        // to run in additional browsers:
+        // 1. install corresponding karma launcher
+        //    http://karma-runner.github.io/0.13/config/browsers.html
+        // 2. add it to the `browsers` array below.
         browsers: ['PhantomJS'],
         frameworks: ['mocha', 'sinon-chai'],
-        reporters: ['spec', 'coverage'],
+        reporters: ['mocha', 'coverage'],
         files: ['./index.js'],
         preprocessors: {
             './index.js': ['webpack', 'sourcemap'],
@@ -26,6 +26,9 @@ module.exports = (config) => {
                 { type: 'lcov', subdir: '.' },
                 { type: 'text-summary' },
             ],
+        },
+        mochaReporter: {
+            showDiff: true,
         },
     });
 };

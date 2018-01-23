@@ -1,3 +1,6 @@
+// UI type
+export const TRIGGER_SIDEBAR = 'TRIGGER_SIDEBAR';
+// Data type
 export const GET_COURSES_LIST = 'GET_COURSES_LIST';
 export const SELECT_COURSE = 'SELECT_COURSE';
 export const SELECT_VIDEO = 'SELECT_VIDEO';
@@ -16,6 +19,8 @@ export const LOGINED = 'LOGINED';
 export const LOGOUTED = 'LOGOUTED';
 
 export default {
+    TRIGGER_SIDEBAR,
+
     GET_COURSES_LIST,
     SELECT_COURSE,
     SELECT_VIDEO,

@@ -1,4 +1,5 @@
 import {
+    TRIGGER_SIDEBAR,
     GET_COURSES_LIST,
     SELECT_COURSE,
     SELECT_VIDEO,
@@ -17,16 +18,21 @@ import {
     LOGOUTED,
 } from './types';
 
-function injectCountryInfoToClick(demographicInfo, denseLogs) {
+function injectCountryInfoToClick(demographicInfo, denseLogsSet) {
     const userToCountry = {};
     for (const country of demographicInfo) {
         for (const userId of country.users) {
-            userToCountry[userId] = country.code3;
+            userToCountry[userId] = country.code3 || 'UnKnown';
         }
     }
-    for (const denseLog of denseLogs) {
-        for (const click of denseLog.clicks) {
-            click.country = userToCountry[click.userId];
+    for (const denseLogs of denseLogsSet) {
+        for (const denseLog of denseLogs) {
+            if (!denseLog.countryInjected) {
+                for (const click of denseLog.clicks) {
+                    click.country = userToCountry[click.userId] || 'UnKnown';
+                }
+                denseLog.countryInjected = true;
+            }
         }
     }
 }
@@ -51,7 +57,35 @@ function sortCourse(cA, cB) {
     return orderB.localeCompare(orderA);
 }
 
+function calVideoDurationFromClicks(denseLogs) {
+    let maxDuration = 0;
+    for (const denseLog of denseLogs) {
+        for (const click of denseLog.clicks) {
+            const times = [maxDuration];
+            const { oldTime, currentTime, newTime } = click;
+            if (oldTime) {
+                times.push(oldTime);
+            }
+            if (currentTime) {
+                times.push(currentTime);
+            }
+            if (newTime) {
+                times.push(newTime);
+            }
+            maxDuration = Math.max(...times);
+        }
+    }
+    return maxDuration;
+}
+
 const mutations = {
+    [TRIGGER_SIDEBAR](state, value) {
+        if (typeof value === 'boolean') {
+            state.sideBarIsCollapsed = value;
+        } else {
+            state.sideBarIsCollapsed = !state.sideBarIsCollapsed;
+        }
+    },
     [GET_COURSES_LIST](state, playload) {
         const { coursesList } = playload;
         if (coursesList) {
@@ -71,49 +105,75 @@ const mutations = {
             state.selectedCourse = course;
             state.selectedVideo = null;
             state.denseLogs = null;
-            state.clicksFilters = {};
         }
     },
     [SELECT_VIDEO](state, playload) {
         const { selectedVideo } = playload;
         if (selectedVideo) {
+            if (!('clicksFilters' in selectedVideo)) {
+                selectedVideo.clicksFilters = {
+                    startDate: new Date(state.selectedCourse.startDate),
+                    endDate: new Date(state.selectedCourse.endDate || Date.now()),
+                    countries: [],
+                };
+            }
             state.selectedVideo = selectedVideo;
         }
     },
     [FETCH_CLICKS](state, playload) {
         const { denseLogs, fresh } = playload;
-        // inject country info to each click
+        if (!denseLogs) {
+            return;
+        }
         if (fresh) {
             if (state.demographicInfo) {
-                injectCountryInfoToClick(state.demographicInfo, denseLogs);
+                // inject country info to each click
+                injectCountryInfoToClick(state.demographicInfo, [denseLogs.denseLogs]);
             }
-            Object.freeze(denseLogs);
-            state.selectedVideo.denseLogs = denseLogs;
+            Object.freeze(denseLogs.denseLogs);
+            const video = state.courses[denseLogs.courseId].videos.find(v => v.id === denseLogs.videoId);
+            video.denseLogs = denseLogs.denseLogs;
+            // state.selectedVideo.denseLogs = denseLogs;
+            // if duration of video does not exist or equal to zero, then calculate the duration
+            // from the clicks.
+            if (!video.duration) {
+                video.duration = calVideoDurationFromClicks(denseLogs.denseLogs);
+            }
+            state.denseLogs = denseLogs.denseLogs;
+        } else {
+            // if is not fresh, the denseLogs is raw logs
+            state.denseLogs = denseLogs;
         }
-        state.denseLogs = denseLogs;
-        state.clicksFilters = {};
     },
     [FETCH_DEMOGRAPHICINFO](state, playload) {
         const { demographicInfo, fresh } = playload;
+        if (!demographicInfo) {
+            return;
+        }
         if (fresh) {
             // inject country info to each click
-            if (state.denseLogs) {
-                injectCountryInfoToClick(demographicInfo, state.denseLogs);
-            }
-            Object.freeze(demographicInfo);
-            state.coursesDemographicInfo[state.selectedCourse.id] = demographicInfo;
+            const { courseId } = demographicInfo;
+            injectCountryInfoToClick(demographicInfo.demographicInfo,
+                state.courses[courseId].videos.filter(v => v.denseLogs).map(v => v.denseLogs));
+            Object.freeze(demographicInfo.demographicInfo);
+            state.coursesDemographicInfo[courseId] = demographicInfo.demographicInfo;
+            state.demographicInfo = demographicInfo.demographicInfo;
+        } else {
+            state.demographicInfo = demographicInfo;
         }
-        state.demographicInfo = demographicInfo;
     },
     [UPDATE_CLICKS_FILTER](state, playload) {
         const { id, value } = playload;
-        const clicksFilters = state.clicksFilters;
-        if (!value) {
+        if (!id) {
+            return;
+        }
+        const clicksFilters = state.selectedVideo.clicksFilters;
+        if (value === undefined || value === null) {
             delete clicksFilters[id];
         } else {
             clicksFilters[id] = value;
         }
-        state.clicksFilters = {
+        state.selectedVideo.clicksFilters = {
             ...clicksFilters,
         };
     },
@@ -123,7 +183,7 @@ const mutations = {
         let minSentiment = 1000000000;
         let maxSentiment = -10000000000;
         for (const s of sentimentInfo) {
-            const date = new Date(s.timestamp);
+            const date = new Date(+s.timestamp);
             const dayTs = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
             if (!(dayTs in sentimentByDay)) {
                 sentimentByDay[dayTs] = [];
@@ -174,8 +234,11 @@ const mutations = {
     [FINISHED_LOADING](state) {
         state.networkLoading = false;
     },
-    [LOGINED](state) {
-        state.username = 'logined';
+    [LOGINED](state, payload = {}) {
+        const { username } = payload;
+        if (username) {
+            state.username = username;
+        }
     },
     [LOGOUTED](state) {
         state.username = null;

@@ -1,4 +1,5 @@
 export function arrayAggregate(num, arr) {
+    if (num <= 1) return arr;
     const newArray = [];
     const length = arr.length;
     let sum = 0;

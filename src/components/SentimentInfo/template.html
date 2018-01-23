@@ -1,0 +1,59 @@
+<div v-show="course" class="sentiment-info">
+    <div class="body">
+        <svg ref="sentimentSvg" :width="svgWidth" :height="svgHeight">
+            <g class="plot-info">
+                <g class="always">
+                    <defs>
+                        <linearGradient :id="gradientId" x1="0%" x2="100%" y1="0%" y2="0%">
+                            <stop v-for="(item, idx) in gradientStopColor" :key="item" :offset="idx*0.125" :stop-color="item">
+                            </stop>
+                        </linearGradient>
+                    </defs>
+                    <rect :fill="`url(#${gradientId})`" :x="svgWidth - legendWidth - plotPadding.right" :y="0" rx="2" ry="2" :width="legendWidth"
+                        :height="legendHeight"></rect>
+                    <text class="x caption" :x="svgWidth * 0.5" :y="plotPadding.top+plotHeight + plotPadding.bottom * 0.75">{{isDetail? 'Time of a day': 'Date from the course started'}}</text>
+                    <text class="legend" :x="leftLegendTextX" :y="legendHeight">{{isDetail ? '15' : 'Negative' }}</text>
+                    <text class="legend" :x="rightLegendTextX" :y="legendHeight">{{isDetail ? '100' : 'Positive'}}</text>
+                </g>
+                <g v-show="!isDetail" class="summary">
+                    <text class="title" :x="svgWidth * 0.5 - 100" :y="plotPadding.top" font-size="30px">Sentiment Trend</text>
+                    <text class="y caption" :x=" - svgHeight * 0.5 - 50" :y="plotPadding.left * 0.25" transform="rotate(-90)">Sentiment Score</text>
+                </g>
+                <g v-show="isDetail" class="detail">
+                    <rect class="legend" fill="black" opacity="0.4" :x="svgWidth - legendWidth - plotPadding.right - legendHeight - 40" y="0"
+                        :width="legendHeight" :height="legendHeight"></rect>
+                    <text class="legend" :x="(leftLegendTextX + rightLegendTextX) * 0.5" :y="legendHeight">Student's Grade</text>
+                    <text class="legend" :x="svgWidth - legendWidth - plotPadding.right - legendHeight - 40" :y="legendHeight">No Grade</text>
+
+                    <text class="bg-text" :x="-bgRectHeight*0.75 - plotPadding.top" :y="plotPadding.left * 0.25" dy=".31em" transform="rotate(-90)">Appreciation</text>
+                    <text class="bg-text" :x="-bgRectHeight*1.75 - plotPadding.top " :y="plotPadding.left * 0.25" dy=".31em" transform="rotate(-90)">Neutral</text>
+                    <text class="bg-text" :x="-bgRectHeight*2.75 - plotPadding.top" :y="plotPadding.left * 0.25" dy=".31em" transform="rotate(-90)">Questions</text>
+                    <text class="goBackLink" :x="plotPadding.right" :y="plotPadding.top" @click="updatePlot">
+                        <tspan text-decoration="underline">Go Back To Summary</tspan>
+                    </text>
+                </g>
+            </g>
+
+            <g id="plot" class="plot" :transform="`translate(${plotPadding.left}, ${plotPadding.top})`">
+
+                <g v-show="isDetail" class="detail">
+                    <!--legend isDetail-->
+                    <rect class="background" fill="rgba(204,235,197, 0.5)" :width="plotWidth" :height="bgRectHeight"></rect>
+                    <rect class="background" fill="rgba(255,255,204, 0.5)" :y="bgRectHeight" :width="plotWidth" :height="bgRectHeight"></rect>
+                    <rect class="background" fill="rgba(253,218,236, 0.5)" :y="bgRectHeight*2" :width="plotWidth" :height="bgRectHeight"></rect>
+                </g>
+                <transition-group name="sentiment-nodes" class="sentiment-nodes" tag="g">
+                    <circle v-for="node in currentData" :key="node.timestamp" class="node" :cx="xScale(node.timestamp)" :cy="yScale(node.sentiment)"
+                        :r="nodeRadius"
+                        :fill="summaryColor(node.sentiment)" @click="()=>detailPlot(node)" @mouseover="e=>mouseoverNode(e, node)"
+                        @mouseout="mouseoutNode"> </circle>
+                </transition-group>
+            </g>
+
+        </svg>
+        <div id="plot-tooltip" class="tooltip" :style="tooltipPos">
+            <span class="tooltip-content">{{tooltipContent.time}}</span>
+            <span class="tooltip-content">{{tooltipContent.sentiment}}</span>
+        </div>
+    </div>
+</div>

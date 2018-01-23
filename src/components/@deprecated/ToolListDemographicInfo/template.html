@@ -1,0 +1,11 @@
+<div class="demographic-info">
+    <ui-modal ref="modalDemographicInfo" class="modal" size="large">
+        <h3 slot="header" class="header">Demographic Distribution Information</h3>
+        <div ref="geomap" class="body"></div>
+    </ui-modal>
+    <!--Button-->
+    <div v-show="course" class="statisitc-icon" @click="openModal">
+        <span class="fa fa-globe"></span>
+        <br/>Demographic Info
+    </div>
+</div>

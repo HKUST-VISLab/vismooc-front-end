@@ -2,7 +2,7 @@
 import d3 from 'd3';
 import { mapState } from 'vuex';
 import { UiModal } from '../KeenUI';
-import { DBSCAN } from '../../utils/DBSCAN';
+import { DBSCAN } from '../../thirdParty/DBSCAN';
 import javaData from '../../assets/javaData.json';
 
 export default {

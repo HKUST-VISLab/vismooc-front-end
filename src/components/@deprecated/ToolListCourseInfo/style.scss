@@ -1,0 +1,22 @@
+.course-info{
+    >.modal{
+        .body{
+            width: 40vw;
+            .info-item{
+                align-content: flex-start;
+                align-items: baseline;
+            }
+            .instructors{
+                span {
+                    word-wrap: break-word;
+                }
+            }
+            .description{
+                span {
+                    text-align: left;
+                }
+            }
+        }
+    }
+}
+

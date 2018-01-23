@@ -1,0 +1,29 @@
+<div class="course-page">
+    <section v-if="course" class="course-info grid">
+        <h2 class="section-title">{{ course.name }}</h2>
+        <span class="period">From {{ course.startDate | formatTimestamp }} to {{ course.endDate | formatTimestamp }}</span>
+        <div class="instructors info-item col col-12 grid">
+            <strong class="info-label col col-2-desktop col-2-tablet col-2-phone">Instructor(s):</strong>
+            <span class="col col-10-desktop col-6-tablet col-2-phone">{{  course.instructor.join(', ') }}</span>
+        </div>
+        <div class="description info-item col col-12 grid">
+            <strong class="info-label col col-2-desktop col-2-tablet col-2-phone">Description:</strong>
+            <span class="col col-10-desktop col-6-tablet col-2-phone">{{ course.description}}</span>
+        </div>
+        <img :src=" course.img" style="width:150px" />
+    </section>
+    <h1 v-else-if="!username" style="text-align:center;">Please Login first!</h1>
+    <h1 v-else style="text-align:center;">Please select a course from NavBar!</h1>
+
+    <hr />
+    <section v-show="videoPopInfo && username" class="videos-popularity">
+        <h2 class="section-title">Videos Popularity</h2>
+        <svg ref="barchart" :style="{height:videoPopChartConfig.height+'px', width:'100%'}"></svg>
+    </section>
+
+    <hr />
+    <section v-show="demographicInfo && username" class="demographic-info">
+        <h2 class="section-title">Demographic Distribution Information</h2>
+        <div ref="geomap" class="geo-chart"></div>
+    </section>
+</div>
