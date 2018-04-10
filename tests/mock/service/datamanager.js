@@ -25,9 +25,6 @@ function getClicks(courseId, videoId, paramters = {}, callback) {
     }, 1000);
 }
 
-export const NO_PERMISSION_1 = 'No Permission_1';
-export const NO_PERMISSION_2 = 'No Permission_2';
-
 // Public API
 export default {
     getClicks,
