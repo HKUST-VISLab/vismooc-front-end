@@ -50,20 +50,6 @@ function getSocialNetworkLayout(courseId, threshold, callback) {
     });
 }
 
-// function getWordCloudDataByUser(courseId, userId, callback) {
-//     const tmpURL = `${api}/getWordList?courseId=${courseId}&userId=${userId}`;
-//     $http.get(tmpURL).then((response) => {
-//         callback(response);
-//     });
-// }
-
-// function getWordCloudDataByGeo(courseId, countrycode, callback) {
-//     const tmpURL = `${api}/getWordList?courseId=${courseId}&countrycode=${countrycode}`;
-//     $http.get(tmpURL).then((response) => {
-//         callback(response);
-//     });
-// }
-
 export function logout() {
     location.href = `${mainPath}/logout`;
 }
@@ -71,9 +57,6 @@ export function logout() {
 export function login() {
     location.href = `${mainPath}/login`;
 }
-
-export const NO_PERMISSION_1 = 'No Permission_1';
-export const NO_PERMISSION_2 = 'No Permission_2';
 
 // Public API
 export default {
@@ -85,6 +68,4 @@ export default {
     getCourseList,
     getSentimentData,
     getSocialNetworkLayout,
-    // getWordCloudDataByUser,
-    // getWordCloudDataByGeo,
 };
