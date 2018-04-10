@@ -1,0 +1,8 @@
+server {
+    location ~ ^/(api|login|logout|oauth|oauth2) {
+        proxy_pass http://${WEB_SERVER_HOST}:${WEB_SERVER_PORT};
+    }
+    location / {
+        root /usr/share/nginx/html;
+    }
+}
