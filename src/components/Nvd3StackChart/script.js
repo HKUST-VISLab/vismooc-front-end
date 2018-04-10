@@ -50,7 +50,7 @@ export default {
             const data = this.eventDict;
             if (!data) return;
 
-            if (!this.complexObject.chart) {
+            if (!this.complexObject.chart && this.video) {
                 this.complexObject.chart = nv.models.stackedAreaChart();
                 // set the width and height
                 const rect = this.$refs.svg.getBoundingClientRect();
