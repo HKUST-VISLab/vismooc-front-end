@@ -50,18 +50,8 @@ function getSocialNetworkLayout(courseId, threshold, callback) {
     });
 }
 
-export function logout() {
-    location.href = `${mainPath}/logout`;
-}
-
-export function login() {
-    location.href = `${mainPath}/login`;
-}
-
 // Public API
 export default {
-    logout,
-    login,
     getClicks,
     getDemographicData,
     getCourseInfo,

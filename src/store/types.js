@@ -15,8 +15,6 @@ export const FETCH_WORDCLOUD = 'FETCH_WORDCLOUD';
 
 export const LOADING = 'LOADING';
 export const FINISHED_LOADING = 'FINISHED_LOADING';
-export const LOGINED = 'LOGINED';
-export const LOGOUTED = 'LOGOUTED';
 
 export default {
     TRIGGER_SIDEBAR,
@@ -34,6 +32,4 @@ export default {
 
     LOADING,
     FINISHED_LOADING,
-    LOGINED,
-    LOGOUTED,
 };

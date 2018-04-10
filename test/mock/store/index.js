@@ -7,7 +7,6 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
-        username: null,
         selectedCourse: null,
         selectedVideo: null,
         clicksFilters: {},

@@ -8,8 +8,6 @@ import {
     UPDATE_CLICKS_FILTER,
     LOADING,
     FINISHED_LOADING,
-    LOGINED,
-    LOGOUTED,
 } from 'src/store/types';
 import dataManager from '../service/datamanager';
 
@@ -17,12 +15,7 @@ function fetchDataWrapper(commit, mutationType, func, target, ...params) {
     commit(LOADING);
     params.push((response) => {
         const data = response.data;
-        if (isAuthenticated(data)) {
-            commit(mutationType, { [target]: data, fresh: true });
-            commit(LOGINED);
-        } else {
-            commit(LOGOUTED);
-        }
+        commit(mutationType, { [target]: data, fresh: true });
         commit(FINISHED_LOADING);
     });
     func(...params);

@@ -14,8 +14,6 @@ import {
 
     LOADING,
     FINISHED_LOADING,
-    LOGINED,
-    LOGOUTED,
 } from './types';
 
 function injectCountryInfoToClick(demographicInfo, denseLogsSet) {
@@ -233,15 +231,6 @@ const mutations = {
     },
     [FINISHED_LOADING](state) {
         state.networkLoading = false;
-    },
-    [LOGINED](state, payload = {}) {
-        const { username } = payload;
-        if (username) {
-            state.username = username;
-        }
-    },
-    [LOGOUTED](state) {
-        state.username = null;
     },
 };
 

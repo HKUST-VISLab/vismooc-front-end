@@ -12,17 +12,16 @@
         </div>
         <img :src=" course.img" style="width:150px" />
     </section>
-    <h1 v-else-if="!username" style="text-align:center;">Please Login first!</h1>
-    <h1 v-else style="text-align:center;">Please select a course from NavBar!</h1>
+    <h1 style="text-align:center;">Please select a course from NavBar!</h1>
 
     <hr />
-    <section v-show="videoPopInfo && username" class="videos-popularity">
+    <section v-show="videoPopInfo" class="videos-popularity">
         <h2 class="section-title">Videos Popularity</h2>
         <svg ref="barchart" :style="{height:videoPopChartConfig.height+'px', width:'100%'}"></svg>
     </section>
 
     <hr />
-    <section v-show="demographicInfo && username" class="demographic-info">
+    <section v-show="demographicInfo" class="demographic-info">
         <h2 class="section-title">Demographic Distribution Information</h2>
         <div ref="geomap" class="geo-chart"></div>
     </section>

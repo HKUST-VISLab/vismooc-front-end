@@ -13,25 +13,17 @@ import {
 
     LOADING,
     FINISHED_LOADING,
-    LOGINED,
-    LOGOUTED,
 } from './types';
 import dataManager from '../service/datamanager';
-import { isAuthenticated } from '../service/auth';
 
 function fetchDataWrapper(commit, mutationType, func, target, ...params) {
     commit(LOADING);
     params.push((response) => {
         const data = response.data;
-        if (isAuthenticated(data)) {
-            commit(mutationType, {
-                [target]: data,
-                fresh: true,
-            });
-        } else {
-            commit(LOGOUTED);
-            commit(TRIGGER_SIDEBAR, true);
-        }
+        commit(mutationType, {
+            [target]: data,
+            fresh: true,
+        });
         commit(FINISHED_LOADING);
     });
     func(...params);
@@ -45,19 +37,13 @@ const actions = {
         // fetchDataWrapper(commit, GET_COURSES_LIST, dataManager.getCourseList, 'coursesList');
         commit(LOADING);
         dataManager.getCourseList((response) => {
-            if (isAuthenticated(response.data)) {
-                const { coursesList, selectedCourseId, username } = response.data;
-                commit(GET_COURSES_LIST, { coursesList, fresh: true });
-                commit(LOGINED, { username });
-                if (selectedCourseId) {
-                    dispatch(SELECT_COURSE, { selectedCourseId });
-                    commit(TRIGGER_SIDEBAR, true);
-                } else {
-                    commit(TRIGGER_SIDEBAR, false);
-                }
-            } else {
-                commit(LOGOUTED);
+            const { coursesList, selectedCourseId } = response.data;
+            commit(GET_COURSES_LIST, { coursesList, fresh: true });
+            if (selectedCourseId) {
+                dispatch(SELECT_COURSE, { selectedCourseId });
                 commit(TRIGGER_SIDEBAR, true);
+            } else {
+                commit(TRIGGER_SIDEBAR, false);
             }
             commit(FINISHED_LOADING);
         });
@@ -72,18 +58,13 @@ const actions = {
                 course: state.courses[selectedCourseId],
             });
         } else {
-            fetchDataWrapper(commit, SELECT_COURSE, dataManager.getCourseInfo, 'course', selectedCourseId);
-            // commit(LOADING);
-            // dataManager.getCourseInfo(selectedCourseId, (response) => {
-            //     const course = response.data;
-            //     if (isAuthenticated(course)) {
-            //         commit(SELECT_COURSE, { course, fresh: true });
-            //         commit(LOGINED);
-            //     } else {
-            //         commit(LOGOUTED);
-            //     }
-            //     commit(FINISHED_LOADING);
-            // });
+            // fetchDataWrapper(commit, SELECT_COURSE, dataManager.getCourseInfo, 'course', selectedCourseId);
+            commit(LOADING);
+            dataManager.getCourseInfo(selectedCourseId, (response) => {
+                const { course } = response.data;
+                commit(SELECT_COURSE, { course, fresh: true });
+                commit(FINISHED_LOADING);
+            });
         }
     },
     [SELECT_VIDEO]({ commit, state }, payload) {
@@ -98,18 +79,6 @@ const actions = {
             const courseId = state.selectedCourse.id;
             const videoId = state.selectedVideo.id;
             fetchDataWrapper(commit, FETCH_CLICKS, dataManager.getClicks, 'denseLogs', courseId, videoId, {});
-
-            // commit(LOADING);
-            // dataManager.getClicks(courseId, videoId, {}, (response) => {
-            //     const denseLogs = response.data;
-            //     if (isAuthenticated(denseLogs)) {
-            //         commit(FETCH_CLICKS, { denseLogs, fresh: true });
-            //         commit(LOGINED);
-            //     } else {
-            //         commit(LOGOUTED);
-            //     }
-            //     commit(FINISHED_LOADING);
-            // });
         }
     },
     [FETCH_DEMOGRAPHICINFO]({ commit, state }) {
@@ -123,17 +92,6 @@ const actions = {
             const courseId = selectedCourse.id;
             fetchDataWrapper(commit, FETCH_DEMOGRAPHICINFO, dataManager.getDemographicData,
                 'demographicInfo', courseId);
-            // commit(LOADING);
-            // dataManager.getDemographicData(courseId, (response) => {
-            //     const demographicInfo = response.data;
-            //     if (isAuthenticated(demographicInfo)) {
-            //         commit(FETCH_DEMOGRAPHICINFO, { demographicInfo, fresh: true });
-            //         commit(LOGINED);
-            //     } else {
-            //         commit(LOGOUTED);
-            //     }
-            //     commit(FINISHED_LOADING);
-            // });
         }
     },
     [UPDATE_CLICKS_FILTER]({ commit }, payload) {
@@ -162,12 +120,7 @@ const actions = {
             commit(LOADING);
             dataManager.getSocialNetworkLayout(courseId, threshold, (response) => {
                 const socialNetworkInfo = response.data;
-                if (isAuthenticated(socialNetworkInfo)) {
-                    commit(FETCH_FORUMSOCIALNETWORK, { socialNetworkInfo, threshold, fresh: true });
-                    commit(LOGINED);
-                } else {
-                    commit(LOGOUTED);
-                }
+                commit(FETCH_FORUMSOCIALNETWORK, { socialNetworkInfo, threshold, fresh: true });
                 commit(FINISHED_LOADING);
             });
         }

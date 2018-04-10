@@ -47,7 +47,6 @@ export default {
             course(state) {
                 return state.selectedCourse;
             },
-            username: 'username',
             videoPopInfo(state) {
                 if (!this.course) {
                     return [];

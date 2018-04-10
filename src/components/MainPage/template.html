@@ -1,11 +1,5 @@
 <div class="main-page">
     <ui-toolbar class="header" :remove-nav-icon="true" text-color="white" type="colored" :loading="networkLoading"  >
-        <div slot="actions">
-            <!--<ui-icon-button color="white" icon="refresh" size="large" type="secondary"></ui-icon-button>
-            <ui-icon-button color="white" icon="search" size="large" type="secondary"></ui-icon-button>-->
-            <a v-if="username" class="navbar-brand" style="font-size: 22px; color: #DEDEDE; cursor: pointer;" href="/logout">Logout</a>
-            <a v-else class="navbar-brand" style="font-size: 22px; color: #DEDEDE; cursor: pointer;" href="/login">Login</a>
-        </div>
     </ui-toolbar>
     <div class="page grid">
         <section class="col col-11 content">

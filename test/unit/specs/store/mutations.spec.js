@@ -10,8 +10,6 @@ import {
     UPDATE_CLICKS_FILTER,
     LOADING,
     FINISHED_LOADING,
-    LOGINED,
-    LOGOUTED,
 } from 'store/types';
 import { expect, config } from 'chai';
 
@@ -382,31 +380,6 @@ describe('mutations', () => {
             expect(state.networkLoading).to.equal(false);
             mutations[FINISHED_LOADING](state);
             expect(state.networkLoading).to.equal(false);
-        });
-    });
-    describe(LOGINED, () => {
-        it('should assign the username to state.username', () => {
-            const state = { username: 1 };
-            mutations[LOGINED](state, { username: 2 });
-            expect(state.username).to.equal(2);
-
-            mutations[LOGINED](state, {});
-            expect(state.username).to.equal(2);
-
-            const emptyState = {};
-            mutations[LOGINED](emptyState, { username: 2 });
-            expect(emptyState.username).to.equal(2);
-        });
-    });
-    describe(LOGOUTED, () => {
-        it('should set the username to null', () => {
-            const state = { username: 2 };
-            mutations[LOGOUTED](state);
-            expect(state.username).to.equal(null);
-
-            const emptyState = {};
-            mutations[LOGOUTED](emptyState);
-            expect(emptyState.username).to.equal(null);
         });
     });
 });

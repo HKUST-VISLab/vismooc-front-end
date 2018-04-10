@@ -72,7 +72,6 @@ export default {
     },
     computed: {
         ...mapState({
-            username: 'username',
             selectedCourse: 'selectedCourse',
             selectedVideo: 'selectedVideo',
             networkLoading: 'networkLoading',

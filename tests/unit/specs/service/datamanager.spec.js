@@ -65,20 +65,4 @@ describe('Data API', () => {
             });
         });
     });
-
-    describe('logout', () => {
-        it('should redirect to /logout', () => {
-            // datamanager.default.logout();
-        // TODO, need to mock window.location
-            expect(true).to.be.true;
-        });
-    });
-
-    describe('login', () => {
-        it('should redirect to /login', () => {
-            // datamanager.default.login();
-        // TODO, need to mock window.location
-            expect(true).to.be.true;
-        });
-    });
 });
