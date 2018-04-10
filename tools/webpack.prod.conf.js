@@ -8,7 +8,8 @@ const baseWebpackConfig = require('./webpack.base.conf');
 const utils = require('./utils');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 
 const webpackConfig = merge(baseWebpackConfig, {
     devtool: config.build.productionSourceMap ? 'source-map' : 'eval',
@@ -26,9 +27,18 @@ const webpackConfig = merge(baseWebpackConfig, {
         new webpack.DefinePlugin({
             'process.env': process.env.NODE_ENV === 'testing' ? require('../config/test.env') : config.build.env,
         }),
-        new webpack.optimize.UglifyJsPlugin(),
-        new webpack.LoaderOptionsPlugin({
-            minimize: true,
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            },
+            sourceMap: true
+        }),
+        // Compress extracted CSS. We are using this plugin so that possible
+        // duplicated CSS from different components can be deduped.
+        new OptimizeCSSPlugin({
+            cssProcessorOptions: {
+                safe: true
+            }
         }),
         // extract css into its own file
         new ExtractTextPlugin({
@@ -56,7 +66,7 @@ const webpackConfig = merge(baseWebpackConfig, {
             name: 'vendor',
             minChunks: (module, count) =>
                 // any required modules inside node_modules are extracted to vendor
-                 (
+                (
                     module.resource &&
                     /\.js$/.test(module.resource) &&
                     module.resource.indexOf(path.join(__dirname, '../node_modules')) === 0

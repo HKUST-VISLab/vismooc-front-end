@@ -21,6 +21,12 @@ const vueLoaderOptions = {
             browsers: ['last 2 versions'],
         }),
     ],
+    transformToRequire: {
+        video: 'src',
+        source: 'src',
+        img: 'src',
+        image: 'xlink:href'
+    }
 };
 
 module.exports = {
@@ -29,23 +35,28 @@ module.exports = {
     },
     resolve: {
         extensions: ['.js', '.vue', '.json'],
-        modules: [resolve('src'), resolve('node_modules')],
         alias: {
-            src: resolve('src'),
-            assets: resolve('src/assets'),
-            components: resolve('src/components'),
-            'vue-tagsinput$': 'vue-tagsinput/src/input.vue'
+            'src': resolve('src'),
+            'assets': resolve('src/assets'),
+            'components': resolve('src/components'),
+            'containers': resolve('src/containers'),
+            'store': resolve('src/store'),
+            'service':resolve('src/service'),
+            'thirdParty': resolve('src/thirdParty'),
+            "video.js$": resolve('node_modules/video.js/dist/video.es.js'),
+            'vue': 'vue/dist/vue.js',
         },
     },
     module: {
         rules: [{
             test: /\.(js|vue)$/,
+            enforce: 'pre',
             use: {
                 loader: 'eslint-loader',
                 options: { formatter: eslintFormatter },
             },
-            enforce: 'pre',
-            include: [resolve('src'), resolve('tests')],
+            include: [resolve('src'), resolve('test')],
+            exclude: [resolve('src/thirdParty')]
         },
         {
             test: /\.vue$/,
@@ -57,9 +68,7 @@ module.exports = {
         {
             test: /\.js$/,
             use: 'babel-loader',
-            include: [resolve('src'), resolve('tests'),
-            resolve('node_modules/vue-tagsinput/src')
-            ]
+            include: [resolve('src'), resolve('test')]
         },
         {
             test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -85,8 +94,8 @@ module.exports = {
     },
     plugins: [
         new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
+            // $: 'jquery',
+            // jQuery: 'jquery',
             d3: 'd3',
         }),
     ],
