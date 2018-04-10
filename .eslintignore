@@ -3,5 +3,5 @@ config/*.js
 src/components/VideoPlayer
 src/components/ToolListDropout
 src/components/KeenUI
-src/utils/DBSCAN.js
+src/thirdParty
 tests/mock

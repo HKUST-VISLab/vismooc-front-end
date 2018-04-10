@@ -1,7 +1,7 @@
 sudo: required
 language: node_js
 node_js:
-  - "6.9.1"
+  - "6.11.1"
 
 notifications:
   email:
@@ -18,6 +18,10 @@ before_script:
 script:
   - npm run test
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
   - npm install -g codeclimate-test-reporter
-  - $CODECLIMATE_REPO_TOKEN codeclimate-test-reporter < ./tests/unit/coverage/lcov.info
+  - codeclimate-test-reporter < ./test/unit/coverage/lcov.info
+  - npm run build
+  - export DOCKER_TAG=$TRAVIS_BRANCH-$TRAVIS_COMMIT
+  - docker build -t hkustvislab/vismooc-front-end:elearning-$TRAVIS_BRANCH -t hkustvislab/vismooc-front-end:elearning-$DOCKER_TAG .
+  - docker login -u="$DOCKER_EMAIL" -p="$DOCKER_PASSWORD"
+  - docker push hkustvislab/vismooc-front-end
